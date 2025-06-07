@@ -1,5 +1,5 @@
 
-import { FileX, Percent, QuestionMark, TangledLines } from "lucide-react";
+import { FileX, Percent, HelpCircle, Network } from "lucide-react";
 
 const ProblemSection = () => {
   const problems = [
@@ -14,12 +14,12 @@ const ProblemSection = () => {
       description: "Paying more than you should because of your score"
     },
     {
-      icon: QuestionMark,
+      icon: HelpCircle,
       title: "Don't know what's *actually* lowering your score?",
       description: "Credit reports are confusing and hard to understand"
     },
     {
-      icon: TangledLines,
+      icon: Network,
       title: "Feeling stuck and unsure how to fix it?",
       description: "No clear path forward to improve your situation"
     }

@@ -1,5 +1,5 @@
 
-import { CreditCard, Dashboard, PhoneCall } from "lucide-react";
+import { CreditCard, LayoutDashboard, PhoneCall } from "lucide-react";
 
 const HowItWorksSection = () => {
   const steps = [
@@ -10,7 +10,7 @@ const HowItWorksSection = () => {
       detail: "Quick and safe checkout process"
     },
     {
-      icon: Dashboard,
+      icon: LayoutDashboard,
       title: "Instant Access", 
       description: "Immediately see your detailed credit analysis on your dashboard.",
       detail: "Complete report within minutes"
