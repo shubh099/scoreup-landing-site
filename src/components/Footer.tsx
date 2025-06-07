@@ -16,7 +16,7 @@ const Footer = () => {
           
           <div className="text-center">
             <p className="text-sm text-muted-foreground">
-              © 2024 ScoreUp. All rights reserved.
+              © 2025 ScoreUp. All rights reserved.
             </p>
             <p className="text-xs text-muted-foreground mt-2">
               Your trusted partner for credit score improvement
