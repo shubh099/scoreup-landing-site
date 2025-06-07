@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -89,17 +90,15 @@ const HeroSection = () => {
                 </div>
                 
                 {/* Score visualization */}
-                <div className="relative h-40 flex items-end justify-between space-x-2">
+                <div className="relative h-48 flex items-end justify-between space-x-2 mb-8">
                   {/* Score bars representing improvement */}
                   <div className="flex-1 bg-destructive/20 rounded-t h-16 relative">
                     <div className="absolute bottom-0 w-full bg-destructive rounded-t h-12"></div>
-                    <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground">Start</span>
                     <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-sm font-semibold text-destructive">520</span>
                   </div>
                   
                   <div className="flex-1 bg-accent/20 rounded-t h-24 relative">
                     <div className="absolute bottom-0 w-full bg-accent rounded-t h-20"></div>
-                    <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground">3 Months</span>
                     <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-sm font-semibold text-accent">650</span>
                   </div>
                   
@@ -107,9 +106,15 @@ const HeroSection = () => {
                     <div className="absolute bottom-0 w-full bg-success rounded-t h-32 flex items-center justify-center">
                       <TrendingUp className="w-6 h-6 text-success-foreground" />
                     </div>
-                    <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground">6 Months</span>
                     <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-lg font-bold text-success">750+</span>
                   </div>
+                </div>
+                
+                {/* X-axis labels with proper spacing */}
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>Start</span>
+                  <span>3 Months</span>
+                  <span>6 Months</span>
                 </div>
                 
                 <div className="mt-8 text-center">
