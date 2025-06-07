@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -27,9 +26,9 @@ const OTPVerificationDialog = ({ isOpen, onClose, mobileNumber }: OTPVerificatio
 
   const handleVerify = () => {
     console.log("OTP verified successfully:", otp);
-    console.log("Proceeding to value confirmation page...");
+    console.log("Proceeding to personal details page...");
     onClose();
-    navigate('/value-confirmation');
+    navigate('/personal-details');
   };
 
   const handleResendOTP = () => {
