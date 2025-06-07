@@ -1,0 +1,108 @@
+
+import { Button } from "@/components/ui/button";
+import { TrendingUp } from "lucide-react";
+
+const HeroSection = () => {
+  const handleCTAClick = () => {
+    console.log("CTA clicked - Start My ScoreUp Plan for ₹99");
+    // In a real app, this would handle payment/signup flow
+  };
+
+  return (
+    <section className="relative bg-background py-16 md:py-24 overflow-hidden">
+      {/* Background gradient decoration */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5"></div>
+      
+      <div className="container mx-auto px-4 relative">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Column - Text Content */}
+          <div className="space-y-8 animate-fade-in">
+            <div className="space-y-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-foreground">
+                Stop Guessing.{" "}
+                <span className="text-gradient">Start Improving.</span>
+                <br />
+                Your Clear Path to a{" "}
+                <span className="text-success font-extrabold">750+</span>{" "}
+                Credit Score.
+              </h1>
+              
+              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl">
+                Get your latest credit report from multiple bureaus, understand exactly what's hurting your score, and get a step-by-step expert plan to fix it.
+              </p>
+            </div>
+
+            {/* Desktop CTA Button */}
+            <div className="hidden md:block">
+              <Button 
+                onClick={handleCTAClick}
+                size="lg" 
+                className="bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-4 text-lg font-semibold rounded-lg shadow-card transition-all duration-300 transform hover:scale-105"
+              >
+                Start My ScoreUp Plan for ₹99
+              </Button>
+            </div>
+
+            {/* Trust indicators */}
+            <div className="flex items-center space-x-6 text-sm text-muted-foreground">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-success rounded-full"></div>
+                <span>Secure Payment</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-success rounded-full"></div>
+                <span>Instant Access</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-success rounded-full"></div>
+                <span>Expert Guidance</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - Visual */}
+          <div className="relative animate-scale-in">
+            <div className="bg-card rounded-2xl p-8 shadow-card border border-border">
+              <div className="text-center mb-6">
+                <h3 className="text-lg font-semibold text-foreground mb-2">Your Credit Score Journey</h3>
+                <p className="text-sm text-muted-foreground">Watch your score climb with ScoreUp</p>
+              </div>
+              
+              {/* Score visualization */}
+              <div className="relative h-40 flex items-end justify-between space-x-2">
+                {/* Score bars representing improvement */}
+                <div className="flex-1 bg-destructive/20 rounded-t h-16 relative">
+                  <div className="absolute bottom-0 w-full bg-destructive rounded-t h-12"></div>
+                  <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground">Start</span>
+                  <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-sm font-semibold text-destructive">520</span>
+                </div>
+                
+                <div className="flex-1 bg-accent/20 rounded-t h-24 relative">
+                  <div className="absolute bottom-0 w-full bg-accent rounded-t h-20"></div>
+                  <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground">3 Months</span>
+                  <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-sm font-semibold text-accent">650</span>
+                </div>
+                
+                <div className="flex-1 bg-success/20 rounded-t h-36 relative">
+                  <div className="absolute bottom-0 w-full bg-success rounded-t h-32 flex items-center justify-center">
+                    <TrendingUp className="w-6 h-6 text-success-foreground" />
+                  </div>
+                  <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground">6 Months</span>
+                  <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-lg font-bold text-success">750+</span>
+                </div>
+              </div>
+              
+              <div className="mt-8 text-center">
+                <p className="text-sm text-muted-foreground">
+                  Join thousands who've improved their credit with ScoreUp
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default HeroSection;
