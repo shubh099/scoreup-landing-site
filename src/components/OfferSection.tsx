@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 const OfferSection = () => {
   const handleCTAClick = () => {
@@ -88,7 +89,7 @@ const OfferSection = () => {
           <div className="bg-accent/10 rounded-lg p-4 max-w-md mx-auto">
             <p className="text-accent font-semibold text-sm">⚡ Limited Time Pricing</p>
             <p className="text-muted-foreground text-sm mt-1">
-              This special rate is only available during our pilot program
+              This special price is only available for a limited time.
             </p>
           </div>
         </div>
