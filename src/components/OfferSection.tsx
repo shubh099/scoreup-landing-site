@@ -1,22 +1,26 @@
-
 import { Button } from "@/components/ui/button";
-
 const OfferSection = () => {
   const handleCTAClick = () => {
     console.log("Offer CTA clicked - Yes! I Want My ScoreUp Plan for ₹99");
     // In a real app, this would handle payment/signup flow
   };
-
-  const offerItems = [
-    { item: "Full Multi-Bureau Credit Report", value: "₹400" },
-    { item: "Detailed Score Analysis", value: "Priceless" },
-    { item: "Error & Fake Loan Identification", value: "Can save you thousands" },
-    { item: "Personalized Action Plan", value: "₹1,500" },
-    { item: "One-on-One Expert Consultation Call", value: "₹2,000" }
-  ];
-
-  return (
-    <section className="py-16 md:py-20 bg-muted/30">
+  const offerItems = [{
+    item: "Full Multi-Bureau Credit Report",
+    value: "₹400"
+  }, {
+    item: "Detailed Score Analysis",
+    value: "Priceless"
+  }, {
+    item: "Error & Fake Loan Identification",
+    value: "Can save you thousands"
+  }, {
+    item: "Personalized Action Plan",
+    value: "₹1,500"
+  }, {
+    item: "One-on-One Expert Consultation Call",
+    value: "₹2,000"
+  }];
+  return <section className="py-16 md:py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -43,11 +47,7 @@ const OfferSection = () => {
             {/* Offer Content */}
             <div className="p-8">
               <div className="space-y-4 mb-8">
-                {offerItems.map((item, index) => (
-                  <div 
-                    key={index}
-                    className="flex items-start space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors"
-                  >
+                {offerItems.map((item, index) => <div key={index} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
                     <div className="w-6 h-6 bg-success rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                       <span className="text-success-foreground text-sm font-bold">✓</span>
                     </div>
@@ -57,8 +57,7 @@ const OfferSection = () => {
                         (Value: {item.value})
                       </span>
                     </div>
-                  </div>
-                ))}
+                  </div>)}
               </div>
 
               {/* Value Proposition */}
@@ -73,13 +72,7 @@ const OfferSection = () => {
               </div>
 
               {/* CTA Button */}
-              <Button 
-                onClick={handleCTAClick}
-                size="lg" 
-                className="w-full bg-accent hover:bg-accent/90 text-accent-foreground py-4 text-lg font-bold rounded-lg shadow-card transition-all duration-300 transform hover:scale-105"
-              >
-                Yes! I Want My ScoreUp Plan for ₹99
-              </Button>
+              <Button onClick={handleCTAClick} size="lg" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground py-4 text-lg font-bold rounded-lg shadow-card transition-all duration-300 transform hover:scale-105">Get My Plan</Button>
 
               {/* Security & Guarantee */}
               <div className="mt-6 text-center space-y-2">
@@ -102,8 +95,6 @@ const OfferSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default OfferSection;
