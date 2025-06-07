@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Dialog,
   DialogContent,
@@ -18,6 +19,7 @@ interface OTPVerificationDialogProps {
 const OTPVerificationDialog = ({ isOpen, onClose, mobileNumber }: OTPVerificationDialogProps) => {
   const [otp, setOtp] = useState("");
   const [isComplete, setIsComplete] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsComplete(otp.length === 4);
@@ -25,9 +27,9 @@ const OTPVerificationDialog = ({ isOpen, onClose, mobileNumber }: OTPVerificatio
 
   const handleVerify = () => {
     console.log("OTP verified successfully:", otp);
-    console.log("Proceeding to payment page...");
+    console.log("Proceeding to value confirmation page...");
     onClose();
-    // In a real app, this would navigate to the payment page
+    navigate('/value-confirmation');
   };
 
   const handleResendOTP = () => {
