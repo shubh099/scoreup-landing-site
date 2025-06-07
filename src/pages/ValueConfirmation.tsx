@@ -56,13 +56,6 @@ const ValueConfirmation = () => {
             );
           })}
         </div>
-
-        {/* Price Line */}
-        <div className="text-center">
-          <p className="text-xl font-semibold text-foreground">
-            <span className="text-accent">₹99</span>
-          </p>
-        </div>
       </div>
 
       {/* Sticky Footer CTA */}
