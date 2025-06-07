@@ -10,8 +10,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { useToast } from "@/hooks/use-toast";
+import axios from 'axios';
 import { validatePhone, sanitizeInput } from '../utils/validation';
 import { secureSession } from '../utils/secureSession';
+import { secureEncryption } from '../utils/secureEncryption';
 import { otpRateLimiter } from '../utils/rateLimiter';
 
 interface OTPVerificationDialogProps {
@@ -31,6 +33,18 @@ const OTPVerificationDialog = ({
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // API Configuration - You'll need to replace these with your actual values
+  const BASE_URL = ""; // Add your base URL here
+  const AUTHUSER = {
+    initinatOtp: "/initiate-otp", // Add your endpoint here
+    verifyUser: "/verify-user" // Add your verify endpoint here
+  };
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest', // CSRF protection
+    // Add other headers as needed
+  };
+
   useEffect(() => {
     setIsComplete(otp.length === 4);
   }, [otp]);
@@ -48,33 +62,177 @@ const OTPVerificationDialog = ({
     // Sanitize and validate OTP input
     const sanitized = sanitizeInput(value).replace(/[^0-9]/g, '');
     setOtp(sanitized);
+    
+    // Auto-verify when 4 digits are entered
+    if (sanitized.length === 4) {
+      handleVerify(sanitized);
+    }
   };
 
-  const handleVerify = () => {
-    if (!isComplete) return;
+  const handleGTM = (data: any) => {
+    // GTM tracking function - implement based on your GTM setup
+    console.log("GTM event triggered with data:", data);
+  };
+
+  const handleWebEngageEvent = (eventName: string, eventData: any) => {
+    // WebEngage event tracking - implement based on your WebEngage setup
+    console.log(`WebEngage event: ${eventName}`, eventData);
+  };
+
+  const handleVerify = (otpValue?: string) => {
+    const otpToVerify = otpValue || otp;
+    if (otpToVerify.length !== 4) return;
+
+    // Validate API configuration
+    if (!BASE_URL || !AUTHUSER.verifyUser) {
+      toast({
+        title: "Configuration Error",
+        description: "API configuration is incomplete",
+        variant: "destructive",
+      });
+      return;
+    }
 
     setLoading(true);
     
-    // Simulate OTP verification delay
-    setTimeout(() => {
-      console.log("OTP verified successfully:", otp);
-      
-      const sessionData = secureSession.getSessionData();
-      if (sessionData) {
-        console.log("Transaction ID:", sessionData.transactionId);
-        console.log("Message Type:", sessionData.authType);
-      }
-      
-      console.log("Proceeding to personal details page...");
-      setLoading(false);
-      onClose();
-      navigate('/personal-details');
-      
+    const sessionData = secureSession.getSessionData();
+    if (!sessionData?.transactionId) {
       toast({
-        title: "Success",
-        description: "OTP verified successfully",
+        title: "Session Error",
+        description: "No transaction ID found. Please try again.",
+        variant: "destructive",
       });
-    }, 1000);
+      setLoading(false);
+      return;
+    }
+
+    const payload = {
+      transaction_id: sessionData.transactionId,
+      otp: otpToVerify,
+      mobile_no: mobileNumber,
+      type: sessionData.authType,
+      is_temp_otp: false
+    };
+
+    // Add request timeout
+    const timeout = setTimeout(() => {
+      setLoading(false);
+      toast({
+        title: "Request Timeout",
+        description: "Request took too long. Please try again.",
+        variant: "destructive",
+      });
+    }, 10000); // 10 second timeout
+
+    axios
+      .post(
+        BASE_URL + AUTHUSER.verifyUser,
+        payload,
+        { headers: headers }
+      )
+      .then((response) => {
+        clearTimeout(timeout);
+        setLoading(false);
+
+        if (response?.data?.message === 'success') {
+          // Store authentication data securely
+          if (response?.data?.data?.access_token) {
+            localStorage.setItem('token', response.data.data.access_token);
+          }
+          if (response?.data?.data?.lead_profile_id) {
+            localStorage.setItem('leadprofileid', response.data.data.lead_profile_id);
+          }
+          localStorage.setItem('auth_Otp', otpToVerify);
+
+          // Handle GTM tracking
+          handleGTM(response.data.data);
+
+          // Handle WebEngage user attributes
+          if (typeof window !== 'undefined' && (window as any).webengage) {
+            const webengage = (window as any).webengage;
+            const userData = response.data.data;
+            
+            if (userData.full_name) {
+              const names = userData.full_name.split(' ');
+              webengage.user.login(userData.lead_profile_id || '');
+              webengage.user.setAttribute('we_email', userData.email || '');
+              webengage.user.setAttribute('we_birth_date', userData.dob || '');
+              webengage.user.setAttribute('we_phone', userData.mobile_no ? `+91${userData.mobile_no}` : "");
+              webengage.user.setAttribute('we_gender', userData.gender?.toLowerCase() || '');
+              webengage.user.setAttribute('we_first_name', names[0] || '');
+              webengage.user.setAttribute('we_last_name', names[names.length - 1] || '');
+              webengage.user.setAttribute('we_email_opt_in', true);
+              webengage.user.setAttribute('we_sms_opt_in', true);
+              webengage.user.setAttribute('we_whatsapp_opt_in', true);
+              webengage.user.setAttribute('we_postal_code', userData.pin_code);
+              webengage.user.setAttribute('we_city', userData.city);
+              webengage.user.setAttribute('we_region', "");
+              webengage.user.setAttribute('we_country', "");
+              webengage.user.setAttribute('we_advisor_id', 15721);
+            }
+          }
+
+          // Handle WebEngage event
+          if (response.data.data.full_name) {
+            const names = response.data.data.full_name.split(' ');
+            handleWebEngageEvent('user_login', {
+              user_id: response.data.data.lead_profile_id,
+              first_name: names[0],
+              last_name: names[names.length - 1],
+              birth_date: response.data.data.dob,
+              phone: `+91${mobileNumber}`,
+              email: response.data.data.email,
+              gender: response.data.data.gender,
+              postal_code: response.data.data.pin_code,
+              city: response.data.data.city,
+              region: "",
+              country: "",
+              advisor_id: 15721,
+              whatsapp_opt_in: true,
+            });
+          }
+
+          toast({
+            title: "Success",
+            description: "OTP verified successfully",
+          });
+
+          // Navigate based on user status
+          if (response.data.data.is_first_time_user === true) {
+            navigate('/personal-details');
+          } else {
+            navigate('/value-confirmation');
+          }
+          
+          onClose();
+        }
+      })
+      .catch((error) => {
+        clearTimeout(timeout);
+        setLoading(false);
+        
+        console.error("OTP verification error");
+        
+        if (error?.response?.data?.message === 'failed') {
+          toast({
+            title: "Invalid OTP",
+            description: "Please enter a valid OTP",
+            variant: "destructive",
+          });
+        } else if (error?.response?.status === 500) {
+          toast({
+            title: "Server Error",
+            description: "Internal server error. Please try again.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Error",
+            description: "Something went wrong. Please try again.",
+            variant: "destructive",
+          });
+        }
+      });
   };
 
   const handleResendOTP = () => {
@@ -160,7 +318,7 @@ const OTPVerificationDialog = ({
           </div>
           
           <Button
-            onClick={handleVerify}
+            onClick={() => handleVerify()}
             disabled={!isComplete || loading}
             className={`w-full h-12 text-base font-bold rounded-lg transition-all duration-300 ${
               isComplete && !loading
