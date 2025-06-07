@@ -109,11 +109,11 @@ const HeroSection = () => {
                   </div>
                 </div>
                 
-                {/* X-axis labels with proper spacing */}
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>Start</span>
-                  <span>3 Months</span>
-                  <span>6 Months</span>
+                {/* X-axis labels centered under each bar */}
+                <div className="flex justify-between space-x-2 text-xs text-muted-foreground">
+                  <div className="flex-1 text-center">Start</div>
+                  <div className="flex-1 text-center">3 Months</div>
+                  <div className="flex-1 text-center">6 Months</div>
                 </div>
                 
                 <div className="mt-8 text-center">
