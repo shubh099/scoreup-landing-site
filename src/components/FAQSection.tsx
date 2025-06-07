@@ -1,4 +1,3 @@
-
 import {
   Accordion,
   AccordionContent,
@@ -10,7 +9,7 @@ const FAQSection = () => {
   const faqs = [
     {
       question: "Is this a monthly subscription?",
-      answer: "This pilot offer is a single, one-time payment of ₹99. There are no recurring charges, hidden fees, or monthly subscriptions. You pay once and get access to everything included in the package."
+      answer: "This offer is a single, one-time payment of ₹99. There are no recurring charges, hidden fees, or monthly subscriptions. You pay once and get access to everything included in the package."
     },
     {
       question: "How quickly will I see results?",
