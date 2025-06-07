@@ -32,7 +32,8 @@ const PersonalDetails = () => {
           <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-3">
             <span className="text-foreground">Let's Personalize </span>
             <span className="text-primary">Your Plan to a </span>
-            <span className="text-accent font-bold">750+ Credit Score</span>
+            <span className="text-accent font-bold">750+ </span>
+            <span className="text-primary font-bold">Credit Score</span>
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
             Please provide your name and email to continue.
