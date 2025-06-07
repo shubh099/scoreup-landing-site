@@ -30,11 +30,13 @@ const ValueConfirmation = () => {
       <div className="flex-1 flex flex-col justify-center px-6 py-8">
         {/* Headlines */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-3">
-            You're In!
+          <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-3">
+            <span className="text-foreground">You're Ready. </span>
+            <span className="text-primary">Let's Get Your Score to </span>
+            <span className="text-accent font-extrabold">750+.</span>
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            You've made a smart decision. Here's a final look at what you get:
+            Here's the expert plan and guidance you'll use to get there:
           </p>
         </div>
 
