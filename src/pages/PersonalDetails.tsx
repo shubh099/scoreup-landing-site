@@ -44,7 +44,7 @@ const PersonalDetails = () => {
         <div className="space-y-6 mb-8">
           <div className="space-y-2">
             <Label htmlFor="fullName" className="text-base font-medium text-foreground">
-              Full Name
+              Full Name (as per your PAN)
             </Label>
             <Input
               id="fullName"
