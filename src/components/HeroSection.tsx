@@ -4,24 +4,18 @@ import PhoneNumberInput from './PhoneNumberInput';
 import TrustIndicators from './TrustIndicators';
 import ScoreVisualization from './ScoreVisualization';
 import OTPVerificationDialog from './OTPVerificationDialog';
-import SecurityConfig from './SecurityConfig';
-import { secureEncryption } from '../utils/secureEncryption';
 
 const HeroSection = () => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [showOTPDialog, setShowOTPDialog] = useState(false);
-  const [showSecurityConfig, setShowSecurityConfig] = useState(false);
-
-  const handleSecurityConfig = (config: { encryptionKey: string; aesIv: string }) => {
-    secureEncryption.setConfig(config);
-  };
 
   const handleOTPSent = () => {
     setShowOTPDialog(true);
   };
 
   const handleSecurityConfigNeeded = () => {
-    setShowSecurityConfig(true);
+    // Security config popup removed - handle this case differently if needed
+    console.log("Security configuration needed");
   };
 
   return (
@@ -72,12 +66,6 @@ const HeroSection = () => {
         isOpen={showOTPDialog}
         onClose={() => setShowOTPDialog(false)}
         mobileNumber={mobileNumber}
-      />
-
-      <SecurityConfig
-        isOpen={showSecurityConfig}
-        onClose={() => setShowSecurityConfig(false)}
-        onConfigSaved={handleSecurityConfig}
       />
     </>
   );

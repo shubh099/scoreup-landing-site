@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,12 +10,10 @@ import { secureSession } from '../utils/secureSession';
 import { otpRateLimiter } from '../utils/rateLimiter';
 import { apiSecurityManager } from '../utils/apiSecurity';
 import OTPVerificationDialog from './OTPVerificationDialog';
-import SecurityConfig from './SecurityConfig';
 
 const MobileCTA = () => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [showOTPDialog, setShowOTPDialog] = useState(false);
-  const [showSecurityConfig, setShowSecurityConfig] = useState(false);
   const [loading, setLoading] = useState(false);
   const [validationError, setValidationError] = useState("");
   const { toast } = useToast();
@@ -26,10 +25,6 @@ const MobileCTA = () => {
       initiateOtp: "/initiate-otp", // Add your endpoint here
       verifyUser: "/verify-user" // Add your verify endpoint here
     }
-  };
-
-  const handleSecurityConfig = (config: { encryptionKey: string; aesIv: string }) => {
-    secureEncryption.setConfig(config);
   };
 
   const handleMobileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,9 +69,13 @@ const MobileCTA = () => {
       return;
     }
 
-    // Check if encryption is configured
+    // Check if encryption is configured - skip security config popup
     if (!secureEncryption.isConfigured()) {
-      setShowSecurityConfig(true);
+      toast({
+        title: "Configuration Required",
+        description: "Please configure encryption settings",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -210,12 +209,6 @@ const MobileCTA = () => {
         isOpen={showOTPDialog}
         onClose={() => setShowOTPDialog(false)}
         mobileNumber={mobileNumber}
-      />
-
-      <SecurityConfig
-        isOpen={showSecurityConfig}
-        onClose={() => setShowSecurityConfig(false)}
-        onConfigSaved={handleSecurityConfig}
       />
     </>
   );
