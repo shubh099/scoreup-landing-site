@@ -7,11 +7,13 @@ import TrustSection from "@/components/TrustSection";
 import OfferSection from "@/components/OfferSection";
 import FAQSection from "@/components/FAQSection";
 import MobileCTA from "@/components/MobileCTA";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
-      {/* Header/Nav could go here */}
+      <Header />
       
       <main>
         <HeroSection />
@@ -23,7 +25,7 @@ const Index = () => {
         <FAQSection />
       </main>
 
-      {/* Footer could go here */}
+      <Footer />
       
       {/* Mobile sticky CTA */}
       <MobileCTA />
