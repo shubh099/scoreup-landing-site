@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 const OfferSection = () => {
   const handleCTAClick = () => {
@@ -78,7 +77,7 @@ const OfferSection = () => {
               {/* Security & Guarantee */}
               <div className="mt-6 text-center space-y-2">
                 <p className="text-sm text-muted-foreground">🔒 Secure checkout • Instant access</p>
-                <p className="text-sm text-success font-medium">30-day satisfaction guarantee</p>
+                <p className="text-sm text-success font-medium">30-Day Satisfaction Guarantee</p>
               </div>
             </div>
           </div>
