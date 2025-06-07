@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -90,7 +89,7 @@ const HeroSection = () => {
                 </div>
                 
                 {/* Score visualization */}
-                <div className="relative h-48 flex items-end justify-between space-x-2 mb-8">
+                <div className="relative h-48 flex items-end justify-between space-x-2 mb-4">
                   {/* Score bars representing improvement */}
                   <div className="flex-1 bg-destructive/20 rounded-t h-16 relative">
                     <div className="absolute bottom-0 w-full bg-destructive rounded-t h-12"></div>
