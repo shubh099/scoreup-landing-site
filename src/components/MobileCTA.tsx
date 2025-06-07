@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +7,7 @@ import { secureEncryption } from '../utils/secureEncryption';
 import { validatePhone, sanitizeInput } from '../utils/validation';
 import { secureSession } from '../utils/secureSession';
 import { otpRateLimiter } from '../utils/rateLimiter';
+import { apiSecurityManager } from '../utils/apiSecurity';
 import OTPVerificationDialog from './OTPVerificationDialog';
 import SecurityConfig from './SecurityConfig';
 
@@ -20,14 +20,12 @@ const MobileCTA = () => {
   const { toast } = useToast();
 
   // API Configuration - You'll need to replace these with your actual values
-  const BASE_URL = ""; // Add your base URL here
-  const AUTHUSER = {
-    initinatOtp: "/initiate-otp" // Add your endpoint here
-  };
-  const headers = {
-    'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest', // CSRF protection
-    // Add other headers as needed
+  const API_CONFIG = {
+    baseUrl: "", // Add your base URL here
+    endpoints: {
+      initiateOtp: "/initiate-otp", // Add your endpoint here
+      verifyUser: "/verify-user" // Add your verify endpoint here
+    }
   };
 
   const handleSecurityConfig = (config: { encryptionKey: string; aesIv: string }) => {
@@ -82,10 +80,12 @@ const MobileCTA = () => {
       return;
     }
 
-    if (!BASE_URL || !AUTHUSER.initinatOtp) {
+    // Validate API configuration
+    const configValidation = apiSecurityManager.validateApiConfig(API_CONFIG);
+    if (!configValidation.isValid) {
       toast({
         title: "Configuration Error",
-        description: "API configuration is incomplete",
+        description: configValidation.error || "API configuration is invalid",
         variant: "destructive",
       });
       return;
@@ -94,7 +94,7 @@ const MobileCTA = () => {
     setLoading(true);
 
     const payload = {
-      mobile_no: mobileNumber,
+      mobile_no: sanitizeInput(mobileNumber),
       device_id: '',
       condition_accepted: true,
       whatsaap_consent: false
@@ -112,6 +112,9 @@ const MobileCTA = () => {
       return;
     }
 
+    // Get secure headers
+    const secureHeaders = apiSecurityManager.getSecureHeaders();
+
     const timeout = setTimeout(() => {
       setLoading(false);
       toast({
@@ -123,16 +126,19 @@ const MobileCTA = () => {
 
     axios
       .post(
-        BASE_URL + AUTHUSER.initinatOtp,
+        API_CONFIG.baseUrl + API_CONFIG.endpoints.initiateOtp,
         { data: encryptedPayload },
-        { headers: headers }
+        { headers: secureHeaders }
       )
       .then((response) => {
         clearTimeout(timeout);
         
+        // Sanitize response data
+        const sanitizedResponse = apiSecurityManager.sanitizeApiResponse(response.data);
+        
         secureSession.setSessionData({
-          transactionId: response?.data?.transaction_id,
-          authType: response?.data?.type
+          transactionId: sanitizedResponse?.transaction_id,
+          authType: sanitizedResponse?.type
         });
         
         setShowOTPDialog(true);

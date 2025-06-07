@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -15,6 +14,9 @@ import { validatePhone, sanitizeInput } from '../utils/validation';
 import { secureSession } from '../utils/secureSession';
 import { secureEncryption } from '../utils/secureEncryption';
 import { otpRateLimiter } from '../utils/rateLimiter';
+import { secureTokenManager } from '../utils/secureTokenManager';
+import { apiSecurityManager } from '../utils/apiSecurity';
+import { secureWebEngageManager } from '../utils/secureWebEngage';
 
 interface OTPVerificationDialogProps {
   isOpen: boolean;
@@ -34,15 +36,12 @@ const OTPVerificationDialog = ({
   const { toast } = useToast();
 
   // API Configuration - You'll need to replace these with your actual values
-  const BASE_URL = ""; // Add your base URL here
-  const AUTHUSER = {
-    initinatOtp: "/initiate-otp", // Add your endpoint here
-    verifyUser: "/verify-user" // Add your verify endpoint here
-  };
-  const headers = {
-    'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest', // CSRF protection
-    // Add other headers as needed
+  const API_CONFIG = {
+    baseUrl: "", // Add your base URL here
+    endpoints: {
+      initiateOtp: "/initiate-otp", // Add your endpoint here
+      verifyUser: "/verify-user" // Add your verify endpoint here
+    }
   };
 
   useEffect(() => {
@@ -74,20 +73,16 @@ const OTPVerificationDialog = ({
     console.log("GTM event triggered with data:", data);
   };
 
-  const handleWebEngageEvent = (eventName: string, eventData: any) => {
-    // WebEngage event tracking - implement based on your WebEngage setup
-    console.log(`WebEngage event: ${eventName}`, eventData);
-  };
-
   const handleVerify = (otpValue?: string) => {
     const otpToVerify = otpValue || otp;
     if (otpToVerify.length !== 4) return;
 
     // Validate API configuration
-    if (!BASE_URL || !AUTHUSER.verifyUser) {
+    const configValidation = apiSecurityManager.validateApiConfig(API_CONFIG);
+    if (!configValidation.isValid) {
       toast({
         title: "Configuration Error",
-        description: "API configuration is incomplete",
+        description: configValidation.error || "API configuration is invalid",
         variant: "destructive",
       });
       return;
@@ -108,11 +103,14 @@ const OTPVerificationDialog = ({
 
     const payload = {
       transaction_id: sessionData.transactionId,
-      otp: otpToVerify,
-      mobile_no: mobileNumber,
+      otp: sanitizeInput(otpToVerify),
+      mobile_no: sanitizeInput(mobileNumber),
       type: sessionData.authType,
       is_temp_otp: false
     };
+
+    // Get secure headers
+    const secureHeaders = apiSecurityManager.getSecureHeaders();
 
     // Add request timeout
     const timeout = setTimeout(() => {
@@ -126,70 +124,63 @@ const OTPVerificationDialog = ({
 
     axios
       .post(
-        BASE_URL + AUTHUSER.verifyUser,
+        API_CONFIG.baseUrl + API_CONFIG.endpoints.verifyUser,
         payload,
-        { headers: headers }
+        { headers: secureHeaders }
       )
       .then((response) => {
         clearTimeout(timeout);
         setLoading(false);
 
-        if (response?.data?.message === 'success') {
-          // Store authentication data securely
-          if (response?.data?.data?.access_token) {
-            localStorage.setItem('token', response.data.data.access_token);
-          }
-          if (response?.data?.data?.lead_profile_id) {
-            localStorage.setItem('leadprofileid', response.data.data.lead_profile_id);
-          }
-          localStorage.setItem('auth_Otp', otpToVerify);
+        // Sanitize response data
+        const sanitizedResponse = apiSecurityManager.sanitizeApiResponse(response.data);
+
+        if (sanitizedResponse?.message === 'success') {
+          // Store authentication data securely using new token manager
+          const tokenData = {
+            accessToken: sanitizedResponse?.data?.access_token,
+            leadProfileId: sanitizedResponse?.data?.lead_profile_id,
+            authOtp: otpToVerify,
+            tokenType: sanitizedResponse?.data?.token_type
+          };
+
+          secureTokenManager.setTokens(tokenData);
 
           // Handle GTM tracking
-          handleGTM(response.data.data);
+          handleGTM(sanitizedResponse.data);
 
-          // Handle WebEngage user attributes
-          if (typeof window !== 'undefined' && (window as any).webengage) {
-            const webengage = (window as any).webengage;
-            const userData = response.data.data;
-            
-            if (userData.full_name) {
-              const names = userData.full_name.split(' ');
-              webengage.user.login(userData.lead_profile_id || '');
-              webengage.user.setAttribute('we_email', userData.email || '');
-              webengage.user.setAttribute('we_birth_date', userData.dob || '');
-              webengage.user.setAttribute('we_phone', userData.mobile_no ? `+91${userData.mobile_no}` : "");
-              webengage.user.setAttribute('we_gender', userData.gender?.toLowerCase() || '');
-              webengage.user.setAttribute('we_first_name', names[0] || '');
-              webengage.user.setAttribute('we_last_name', names[names.length - 1] || '');
-              webengage.user.setAttribute('we_email_opt_in', true);
-              webengage.user.setAttribute('we_sms_opt_in', true);
-              webengage.user.setAttribute('we_whatsapp_opt_in', true);
-              webengage.user.setAttribute('we_postal_code', userData.pin_code);
-              webengage.user.setAttribute('we_city', userData.city);
-              webengage.user.setAttribute('we_region', "");
-              webengage.user.setAttribute('we_country', "");
-              webengage.user.setAttribute('we_advisor_id', 15721);
-            }
-          }
-
-          // Handle WebEngage event
-          if (response.data.data.full_name) {
-            const names = response.data.data.full_name.split(' ');
-            handleWebEngageEvent('user_login', {
-              user_id: response.data.data.lead_profile_id,
-              first_name: names[0],
-              last_name: names[names.length - 1],
-              birth_date: response.data.data.dob,
-              phone: `+91${mobileNumber}`,
-              email: response.data.data.email,
-              gender: response.data.data.gender,
-              postal_code: response.data.data.pin_code,
-              city: response.data.data.city,
-              region: "",
-              country: "",
-              advisor_id: 15721,
-              whatsapp_opt_in: true,
+          // Handle WebEngage user attributes securely
+          if (sanitizedResponse.data) {
+            secureWebEngageManager.setUserAttributes({
+              leadProfileId: sanitizedResponse.data.lead_profile_id,
+              email: sanitizedResponse.data.email,
+              fullName: sanitizedResponse.data.full_name,
+              dob: sanitizedResponse.data.dob,
+              mobileNo: mobileNumber,
+              gender: sanitizedResponse.data.gender,
+              pinCode: sanitizedResponse.data.pin_code,
+              city: sanitizedResponse.data.city
             });
+
+            // Handle WebEngage event
+            if (sanitizedResponse.data.full_name) {
+              const names = sanitizedResponse.data.full_name.split(' ');
+              secureWebEngageManager.trackEvent('user_login', {
+                user_id: sanitizedResponse.data.lead_profile_id,
+                first_name: names[0],
+                last_name: names[names.length - 1],
+                birth_date: sanitizedResponse.data.dob,
+                phone: `+91${mobileNumber}`,
+                email: sanitizedResponse.data.email,
+                gender: sanitizedResponse.data.gender,
+                postal_code: sanitizedResponse.data.pin_code,
+                city: sanitizedResponse.data.city,
+                region: "",
+                country: "",
+                advisor_id: 15721,
+                whatsapp_opt_in: true,
+              });
+            }
           }
 
           toast({
@@ -198,7 +189,7 @@ const OTPVerificationDialog = ({
           });
 
           // Navigate based on user status
-          if (response.data.data.is_first_time_user === true) {
+          if (sanitizedResponse.data.is_first_time_user === true) {
             navigate('/personal-details');
           } else {
             navigate('/value-confirmation');
