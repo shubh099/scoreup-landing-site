@@ -29,8 +29,10 @@ const PersonalDetails = () => {
       <div className="flex-1 flex flex-col justify-center px-6 py-8 max-w-md mx-auto w-full">
         {/* Headlines */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-3 text-foreground">
-            Let's Personalize Your Plan.
+          <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-3">
+            <span className="text-foreground">Let's Personalize Your Plan </span>
+            <span className="text-primary">to a </span>
+            <span className="text-accent font-bold">750+ Credit Score</span>
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
             Please provide your name and email to continue.
