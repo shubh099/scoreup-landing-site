@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -48,10 +49,10 @@ const HeroSection = () => {
                 <div className="flex gap-3 items-center max-w-md">
                   <Input
                     type="tel"
-                    placeholder="Enter your mobile number"
+                    placeholder="Enter your mobile no"
                     value={mobileNumber}
                     onChange={(e) => setMobileNumber(e.target.value)}
-                    className="flex-1 w-[60%] h-12 text-base"
+                    className="flex-1 w-[60%] h-12 text-base placeholder:text-sm"
                   />
                   <Button 
                     onClick={handleCTAClick}
