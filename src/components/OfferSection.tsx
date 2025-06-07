@@ -65,7 +65,7 @@ const OfferSection = () => {
                 <p className="text-lg text-muted-foreground mb-2">Total Value:</p>
                 <p className="text-3xl font-bold text-muted-foreground line-through">₹3,900</p>
                 <div className="mt-4">
-                  <p className="text-sm text-muted-foreground mb-2">Start your pilot access for a single payment of just</p>
+                  <p className="text-sm text-muted-foreground mb-2">Improve your credit score at a single payment of just</p>
                   <p className="text-4xl md:text-5xl font-black text-accent">₹99</p>
                   <p className="text-sm text-muted-foreground mt-2">One-time payment • No recurring charges</p>
                 </div>
