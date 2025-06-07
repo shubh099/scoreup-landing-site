@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -13,9 +14,19 @@ interface OTPVerificationDialogProps {
   isOpen: boolean;
   onClose: () => void;
   mobileNumber: string;
+  transactionId?: string;
+  messageType?: string;
+  tempOtp?: boolean;
 }
 
-const OTPVerificationDialog = ({ isOpen, onClose, mobileNumber }: OTPVerificationDialogProps) => {
+const OTPVerificationDialog = ({ 
+  isOpen, 
+  onClose, 
+  mobileNumber, 
+  transactionId, 
+  messageType, 
+  tempOtp 
+}: OTPVerificationDialogProps) => {
   const [otp, setOtp] = useState("");
   const [isComplete, setIsComplete] = useState(false);
   const navigate = useNavigate();
@@ -26,6 +37,9 @@ const OTPVerificationDialog = ({ isOpen, onClose, mobileNumber }: OTPVerificatio
 
   const handleVerify = () => {
     console.log("OTP verified successfully:", otp);
+    console.log("Transaction ID:", transactionId);
+    console.log("Message Type:", messageType);
+    console.log("Temp OTP:", tempOtp);
     console.log("Proceeding to personal details page...");
     onClose();
     navigate('/personal-details');
@@ -33,6 +47,7 @@ const OTPVerificationDialog = ({ isOpen, onClose, mobileNumber }: OTPVerificatio
 
   const handleResendOTP = () => {
     console.log("Resend OTP clicked for number:", mobileNumber);
+    console.log("Transaction ID:", transactionId);
     // In a real app, this would trigger OTP resend
   };
 
