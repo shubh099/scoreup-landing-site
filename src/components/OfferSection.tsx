@@ -86,9 +86,7 @@ const OfferSection = () => {
         {/* Urgency/Scarcity */}
         <div className="text-center mt-8">
           <div className="bg-accent/10 rounded-lg p-4 max-w-md mx-auto">
-            <p className="text-accent font-semibold text-sm">
-              ⚡ Limited Time Pilot Pricing
-            </p>
+            <p className="text-accent font-semibold text-sm">⚡ Limited Time Pricing</p>
             <p className="text-muted-foreground text-sm mt-1">
               This special rate is only available during our pilot program
             </p>
