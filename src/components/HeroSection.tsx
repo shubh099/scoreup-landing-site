@@ -1,10 +1,11 @@
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { TrendingUp } from "lucide-react";
 
 const HeroSection = () => {
   const handleCTAClick = () => {
-    console.log("CTA clicked - Start My ScoreUp Plan for ₹99");
+    console.log("CTA clicked - Get My Plan");
     // In a real app, this would handle payment/signup flow
   };
 
@@ -32,15 +33,22 @@ const HeroSection = () => {
               </p>
             </div>
 
-            {/* Desktop CTA Button */}
+            {/* Desktop CTA Container */}
             <div className="hidden md:block">
-              <Button 
-                onClick={handleCTAClick}
-                size="lg" 
-                className="bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-4 text-lg font-semibold rounded-lg shadow-card transition-all duration-300 transform hover:scale-105"
-              >
-                Start My ScoreUp Plan for ₹99
-              </Button>
+              <div className="flex gap-3 items-center max-w-md">
+                <Input
+                  type="tel"
+                  placeholder="Enter your mobile number"
+                  className="flex-1 w-[60%] h-12 text-base"
+                />
+                <Button 
+                  onClick={handleCTAClick}
+                  size="lg" 
+                  className="w-[40%] bg-accent hover:bg-accent/90 text-accent-foreground h-12 text-base font-bold rounded-lg shadow-card transition-all duration-300 transform hover:scale-105"
+                >
+                  Get My Plan
+                </Button>
+              </div>
             </div>
 
             {/* Trust indicators */}
