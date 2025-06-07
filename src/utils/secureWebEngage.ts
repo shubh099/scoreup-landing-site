@@ -1,4 +1,3 @@
-
 interface UserData {
   leadProfileId?: string;
   email?: string;
@@ -69,7 +68,8 @@ class SecureWebEngageManager {
     }
 
     try {
-      const webengage = (window as any).webengage;
+      const webengage = window.webengage;
+      if (!webengage) return;
       
       // Sanitize and validate all user data
       const sanitizedData = {
