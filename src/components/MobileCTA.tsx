@@ -1,18 +1,22 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import axios from 'axios';
-import { encryptData } from '../utils/encryption';
+import { secureEncryption } from '../utils/secureEncryption';
+import { validatePhone, sanitizeInput } from '../utils/validation';
+import { secureSession } from '../utils/secureSession';
+import { otpRateLimiter } from '../utils/rateLimiter';
 import OTPVerificationDialog from './OTPVerificationDialog';
+import SecurityConfig from './SecurityConfig';
 
 const MobileCTA = () => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [showOTPDialog, setShowOTPDialog] = useState(false);
+  const [showSecurityConfig, setShowSecurityConfig] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [transactionId, setTransactionId] = useState("");
-  const [messageType, setMessageType] = useState("");
-  const [tempOtp, setTempOtp] = useState(false);
+  const [validationError, setValidationError] = useState("");
   const { toast } = useToast();
 
   // API Configuration - You'll need to replace these with your actual values
@@ -22,24 +26,66 @@ const MobileCTA = () => {
   };
   const headers = {
     'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest', // CSRF protection
     // Add other headers as needed
   };
 
-  // Error handling function
+  const handleSecurityConfig = (config: { encryptionKey: string; aesIv: string }) => {
+    secureEncryption.setConfig(config);
+  };
+
+  const handleMobileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const sanitized = sanitizeInput(e.target.value);
+    setMobileNumber(sanitized);
+    
+    if (validationError) {
+      setValidationError("");
+    }
+  };
+
   const errorHandling = (error: any) => {
-    console.error("API Error:", error);
+    console.error("API Error occurred"); // Don't log sensitive details
+    
+    const errorMessage = error?.response?.status === 429 
+      ? "Too many requests. Please try again later."
+      : "Something went wrong. Please try again.";
+      
     toast({
       title: "Error",
-      description: "Something went wrong. Please try again.",
+      description: errorMessage,
       variant: "destructive",
     });
   };
 
   const callInitiateOtp = () => {
-    if (!mobileNumber.trim()) {
+    // Validate phone number
+    const phoneValidation = validatePhone(mobileNumber);
+    if (!phoneValidation.isValid) {
+      setValidationError(phoneValidation.error || "Invalid phone number");
+      return;
+    }
+
+    // Check rate limiting
+    const rateLimitCheck = otpRateLimiter.canMakeRequest(mobileNumber);
+    if (!rateLimitCheck.allowed) {
       toast({
-        title: "Error",
-        description: "Please enter a mobile number",
+        title: "Rate Limit Exceeded",
+        description: rateLimitCheck.message,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check if encryption is configured
+    if (!secureEncryption.isConfigured()) {
+      setShowSecurityConfig(true);
+      return;
+    }
+
+    if (!BASE_URL || !AUTHUSER.initinatOtp) {
+      toast({
+        title: "Configuration Error",
+        description: "API configuration is incomplete",
         variant: "destructive",
       });
       return;
@@ -48,37 +94,48 @@ const MobileCTA = () => {
     setLoading(true);
 
     const payload = {
-      mobile_no: String(mobileNumber) || '',
+      mobile_no: mobileNumber,
       device_id: '',
       condition_accepted: true,
       whatsaap_consent: false
     };
 
-    const encryptedPayload = encryptData(payload);
+    const encryptedPayload = secureEncryption.encryptData(payload);
 
     if (!encryptedPayload) {
       setLoading(false);
+      toast({
+        title: "Encryption Error",
+        description: "Failed to encrypt data",
+        variant: "destructive",
+      });
       return;
     }
 
+    const timeout = setTimeout(() => {
+      setLoading(false);
+      toast({
+        title: "Request Timeout",
+        description: "Request took too long. Please try again.",
+        variant: "destructive",
+      });
+    }, 10000);
+
     axios
       .post(
-        BASE_URL + AUTHUSER?.initinatOtp,
-        {
-          data: encryptedPayload,
-        },
+        BASE_URL + AUTHUSER.initinatOtp,
+        { data: encryptedPayload },
         { headers: headers }
       )
       .then((response) => {
-        setShowOTPDialog(true);
-        setTransactionId(response?.data?.transaction_id);
-        setMessageType(response?.data?.type);
-        setTempOtp(response?.data?.is_temp_otp);
+        clearTimeout(timeout);
         
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('transaction_id', response?.data?.transaction_id);
-          localStorage.setItem('auth_type', response?.data?.type);
-        }
+        secureSession.setSessionData({
+          transactionId: response?.data?.transaction_id,
+          authType: response?.data?.type
+        });
+        
+        setShowOTPDialog(true);
         
         toast({
           title: "Success",
@@ -86,22 +143,13 @@ const MobileCTA = () => {
         });
         
         setLoading(false);
-
-        // Page tracker - implement based on your analytics needs
-        console.log("Page tracker data:", {
-          mobile_no: String(mobileNumber),
-          send_otp_clicked: '1',
-          // Add other tracking data as needed
-        });
       })
       .catch((error) => {
+        clearTimeout(timeout);
         setLoading(false);
+        
         if (error?.response?.data?.detail?.[0]?.type === 'string_pattern_mismatch') {
-          toast({
-            title: "Error",
-            description: "Please enter a valid mobile number",
-            variant: "destructive",
-          });
+          setValidationError("Please enter a valid mobile number");
         } else {
           errorHandling(error);
         }
@@ -109,15 +157,12 @@ const MobileCTA = () => {
   };
 
   const handleCTAClick = () => {
-    if (mobileNumber.trim()) {
-      console.log("Mobile CTA clicked - Get My Plan with number:", mobileNumber);
+    const sanitized = sanitizeInput(mobileNumber);
+    if (sanitized.trim()) {
+      console.log("Mobile CTA clicked - Get My Plan");
       callInitiateOtp();
     } else {
-      toast({
-        title: "Error",
-        description: "Please enter a mobile number",
-        variant: "destructive",
-      });
+      setValidationError("Please enter a mobile number");
     }
   };
 
@@ -125,18 +170,26 @@ const MobileCTA = () => {
     <>
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 shadow-lg z-50">
         <div className="flex gap-3 items-center">
-          <Input
-            type="tel"
-            placeholder="Enter your phone number"
-            value={mobileNumber}
-            onChange={(e) => setMobileNumber(e.target.value)}
-            className="flex-1 w-[60%] h-12 text-base placeholder:text-sm"
-            disabled={loading}
-          />
+          <div className="flex-1 w-[60%]">
+            <Input
+              type="tel"
+              placeholder="Enter your phone number"
+              value={mobileNumber}
+              onChange={handleMobileChange}
+              className={`h-12 text-base placeholder:text-sm ${
+                validationError ? 'border-destructive focus-visible:ring-destructive' : ''
+              }`}
+              disabled={loading}
+              maxLength={15}
+            />
+            {validationError && (
+              <p className="text-xs text-destructive mt-1">{validationError}</p>
+            )}
+          </div>
           <Button 
             onClick={handleCTAClick}
             size="lg" 
-            disabled={loading}
+            disabled={loading || !!validationError}
             className="w-[40%] bg-accent hover:bg-accent/90 text-accent-foreground h-12 text-base font-bold rounded-lg shadow-card transition-all duration-300"
           >
             {loading ? "Loading..." : "Get My Plan"}
@@ -151,9 +204,12 @@ const MobileCTA = () => {
         isOpen={showOTPDialog}
         onClose={() => setShowOTPDialog(false)}
         mobileNumber={mobileNumber}
-        transactionId={transactionId}
-        messageType={messageType}
-        tempOtp={tempOtp}
+      />
+
+      <SecurityConfig
+        isOpen={showSecurityConfig}
+        onClose={() => setShowSecurityConfig(false)}
+        onConfigSaved={handleSecurityConfig}
       />
     </>
   );
