@@ -32,7 +32,7 @@ const ValueConfirmation = () => {
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-3">
             <span className="text-foreground">You're Ready. </span>
-            <span className="text-primary">Let's Get Your Score to </span>
+            <span className="text-primary">Let's GET Your Credit Score to </span>
             <span className="text-accent font-extrabold">750+</span>
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
