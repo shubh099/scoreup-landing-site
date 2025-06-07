@@ -24,7 +24,7 @@ const MobileCTA = () => {
         <div className="flex gap-3 items-center">
           <Input
             type="tel"
-            placeholder="Enter your mobile number"
+            placeholder="Enter your phone number"
             value={mobileNumber}
             onChange={(e) => setMobileNumber(e.target.value)}
             className="flex-1 w-[60%] h-12 text-base placeholder:text-sm"
