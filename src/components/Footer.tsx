@@ -10,7 +10,7 @@ const Footer = () => {
             <img 
               src="/lovable-uploads/854e4b68-4eb3-494d-8363-a696f830bda8.png" 
               alt="ScoreUp Logo" 
-              className="h-8 w-auto"
+              className="h-6 w-auto"
             />
           </div>
           
