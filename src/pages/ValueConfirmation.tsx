@@ -60,7 +60,7 @@ const ValueConfirmation = () => {
         {/* Price Line */}
         <div className="text-center">
           <p className="text-xl font-semibold text-foreground">
-            One-Time Investment: <span className="text-accent">₹99</span>
+            <span className="text-accent">₹99</span>
           </p>
         </div>
       </div>
