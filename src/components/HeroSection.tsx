@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { TrendingUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import axios from 'axios';
+import { encryptData } from '../utils/encryption';
 import OTPVerificationDialog from './OTPVerificationDialog';
 
 const HeroSection = () => {
@@ -26,14 +27,6 @@ const HeroSection = () => {
   };
 
   // Encryption function - You'll need to implement this based on your requirements
-  const encryptData = (data: any) => {
-    // Implement your encryption logic here
-    // For now, returning the data as-is
-    console.log("Data to encrypt:", data);
-    return JSON.stringify(data);
-  };
-
-  // Error handling function
   const errorHandling = (error: any) => {
     console.error("API Error:", error);
     toast({

@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import axios from 'axios';
+import { encryptData } from '../utils/encryption';
 import OTPVerificationDialog from './OTPVerificationDialog';
 
 const MobileCTA = () => {
@@ -23,14 +23,6 @@ const MobileCTA = () => {
   const headers = {
     'Content-Type': 'application/json',
     // Add other headers as needed
-  };
-
-  // Encryption function - You'll need to implement this based on your requirements
-  const encryptData = (data: any) => {
-    // Implement your encryption logic here
-    // For now, returning the data as-is
-    console.log("Data to encrypt:", data);
-    return JSON.stringify(data);
   };
 
   // Error handling function
