@@ -181,7 +181,7 @@ const SavingsCalculator = () => {
                   <CardTitle className="text-sm lg:text-base text-destructive">
                     With a Lower Score
                   </CardTitle>
-                  <span className="text-xl">😰</span>
+                  <span className="text-2xl">😰</span>
                 </div>
                 <div className="text-xs text-muted-foreground">
                   Credit Score: 680 (Fair)
@@ -210,7 +210,7 @@ const SavingsCalculator = () => {
                   <CardTitle className="text-sm lg:text-base text-success">
                     With a 750+ Score
                   </CardTitle>
-                  <span className="text-xl">😊</span>
+                  <span className="text-2xl">😊</span>
                 </div>
                 <div className="text-xs text-muted-foreground">
                   Credit Score: 750+ (Excellent)
