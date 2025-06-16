@@ -35,28 +35,28 @@ const SolutionSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {steps.map((step, index) => (
             <div 
               key={index}
               className="relative animate-fade-in"
               style={{ animationDelay: `${index * 0.15}s` }}
             >
-              {/* Connection line for desktop */}
-              {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-8 left-full w-8 h-0.5 bg-primary/30 z-0"></div>
+              {/* Connection line for steps 1->2 and 3->4 */}
+              {(index === 0 || index === 2) && (
+                <div className="hidden md:block absolute top-8 left-full w-8 h-0.5 bg-primary/30 z-0"></div>
               )}
               
               <div className="relative bg-card rounded-xl p-6 shadow-soft border border-border hover:shadow-card transition-all duration-300">
-                <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mb-4 mx-auto lg:mx-0">
+                <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mb-4 mx-auto md:mx-0">
                   <span className="text-primary-foreground font-bold text-lg">{step.number}</span>
                 </div>
                 
-                <h3 className="text-xl font-semibold text-foreground mb-3 text-center lg:text-left">
+                <h3 className="text-xl font-semibold text-foreground mb-3 text-center md:text-left">
                   {step.title}
                 </h3>
                 
-                <p className="text-muted-foreground text-center lg:text-left leading-relaxed">
+                <p className="text-muted-foreground text-center md:text-left leading-relaxed">
                   {step.description}
                 </p>
               </div>
