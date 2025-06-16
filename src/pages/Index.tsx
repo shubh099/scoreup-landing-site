@@ -6,6 +6,7 @@ import HowItWorksSection from "@/components/HowItWorksSection";
 import SavingsCalculator from "@/components/SavingsCalculator";
 import TrustSection from "@/components/TrustSection";
 import OfferSection from "@/components/OfferSection";
+import UserReviewsSection from "@/components/UserReviewsSection";
 import FAQSection from "@/components/FAQSection";
 import MobileCTA from "@/components/MobileCTA";
 import Header from "@/components/Header";
@@ -24,6 +25,7 @@ const Index = () => {
         <SavingsCalculator />
         <TrustSection />
         <OfferSection />
+        <UserReviewsSection />
         <FAQSection />
       </main>
 
