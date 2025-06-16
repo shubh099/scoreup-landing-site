@@ -18,16 +18,16 @@ interface LoanConfig {
 
 const loanConfigs: Record<LoanType, LoanConfig> = {
   car: {
-    minAmount: 50000,
-    maxAmount: 1000000,
+    minAmount: 300000,
+    maxAmount: 2500000,
     defaultAmount: 300000,
     termYears: 5,
     lowerScoreRate: 11.5,
     highScoreRate: 9.5,
   },
   personal: {
-    minAmount: 50000,
-    maxAmount: 1000000,
+    minAmount: 100000,
+    maxAmount: 2500000,
     defaultAmount: 300000,
     termYears: 5,
     lowerScoreRate: 14,
@@ -151,7 +151,7 @@ const SavingsCalculator = () => {
                 onValueChange={setLoanAmount}
                 max={currentConfig.maxAmount}
                 min={currentConfig.minAmount}
-                step={currentConfig.minAmount}
+                step={50000}
                 className="w-full"
               />
               <div className="flex justify-between text-sm text-muted-foreground">
