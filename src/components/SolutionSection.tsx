@@ -1,4 +1,3 @@
-
 const SolutionSection = () => {
   const steps = [
     {
@@ -35,7 +34,7 @@ const SolutionSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 gap-4 md:gap-8 max-w-4xl mx-auto">
           {steps.map((step, index) => (
             <div 
               key={index}
@@ -44,19 +43,19 @@ const SolutionSection = () => {
             >
               {/* Connection line for steps 1->2 and 3->4 */}
               {(index === 0 || index === 2) && (
-                <div className="hidden md:block absolute top-8 left-full w-8 h-0.5 bg-primary/30 z-0"></div>
+                <div className="hidden sm:block absolute top-8 left-full w-4 md:w-8 h-0.5 bg-primary/30 z-0"></div>
               )}
               
-              <div className="relative bg-card rounded-xl p-6 shadow-soft border border-border hover:shadow-card transition-all duration-300">
-                <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mb-4 mx-auto md:mx-0">
-                  <span className="text-primary-foreground font-bold text-lg">{step.number}</span>
+              <div className="relative bg-card rounded-xl p-3 md:p-6 shadow-soft border border-border hover:shadow-card transition-all duration-300">
+                <div className="w-8 h-8 md:w-12 md:h-12 bg-primary rounded-full flex items-center justify-center mb-2 md:mb-4 mx-auto">
+                  <span className="text-primary-foreground font-bold text-sm md:text-lg">{step.number}</span>
                 </div>
                 
-                <h3 className="text-xl font-semibold text-foreground mb-3 text-center md:text-left">
+                <h3 className="text-lg md:text-xl font-semibold text-foreground mb-2 md:mb-3 text-center">
                   {step.title}
                 </h3>
                 
-                <p className="text-muted-foreground text-center md:text-left leading-relaxed">
+                <p className="text-muted-foreground text-center leading-relaxed text-sm md:text-base">
                   {step.description}
                 </p>
               </div>
