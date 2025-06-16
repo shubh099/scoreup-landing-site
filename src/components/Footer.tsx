@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Instagram, Linkedin, Youtube, Facebook } from 'lucide-react';
+import { Instagram, Linkedin, Youtube, Facebook, Phone, Mail } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -13,6 +13,30 @@ const Footer = () => {
               alt="ScoreUp Logo" 
               className="h-6 w-auto"
             />
+          </div>
+          
+          {/* Contact Information */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
+            <div className="flex items-center justify-center md:justify-end space-x-3">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                <Phone className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-foreground">Phone Support</h3>
+                <p className="text-muted-foreground">+91 7412933933</p>
+                <p className="text-sm text-muted-foreground">Mon - Sat (9.30 AM - 6.00 PM)</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-center md:justify-start space-x-3">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                <Mail className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-foreground">Email Support</h3>
+                <p className="text-muted-foreground">customer@banksathi.com</p>
+              </div>
+            </div>
           </div>
           
           {/* Social Media Links */}
