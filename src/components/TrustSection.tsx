@@ -1,4 +1,3 @@
-
 const TrustSection = () => {
   return (
     <section className="py-16 md:py-20 bg-background">
@@ -22,10 +21,6 @@ const TrustSection = () => {
               You're Not Alone.{" "}
               <span className="text-gradient">Talk to Your Personal Credit Guide.</span>
             </h2>
-            
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Your ScoreUp plan includes a one-on-one call with a credit expert. This isn't an automated bot. It's a real person dedicated to helping you understand your financial health and building a plan for your success.
-            </p>
 
             <div className="space-y-4">
               <div className="flex items-start space-x-3">
