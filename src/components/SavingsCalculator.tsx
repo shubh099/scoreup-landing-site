@@ -120,18 +120,18 @@ const SavingsCalculator = () => {
           <div className="space-y-8">
             {/* Loan Type Tabs */}
             <Tabs value={selectedLoan} onValueChange={handleTabChange} className="w-full">
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="car" className="flex items-center gap-2">
-                  <Car className="h-4 w-4" />
-                  Car Loan
+              <TabsList className="grid w-full grid-cols-3 h-auto">
+                <TabsTrigger value="car" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 p-2 sm:p-3">
+                  <Car className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm">Car Loan</span>
                 </TabsTrigger>
-                <TabsTrigger value="personal" className="flex items-center gap-2">
-                  <User className="h-4 w-4" />
-                  Personal Loan
+                <TabsTrigger value="personal" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 p-2 sm:p-3">
+                  <User className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm">Personal Loan</span>
                 </TabsTrigger>
-                <TabsTrigger value="home" className="flex items-center gap-2">
-                  <Home className="h-4 w-4" />
-                  Home Loan
+                <TabsTrigger value="home" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 p-2 sm:p-3">
+                  <Home className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm">Home Loan</span>
                 </TabsTrigger>
               </TabsList>
             </Tabs>
