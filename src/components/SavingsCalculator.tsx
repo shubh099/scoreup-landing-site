@@ -173,30 +173,30 @@ const SavingsCalculator = () => {
           </div>
 
           {/* Right Column - Comparison Cards */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-4">
             {/* Lower Score Card */}
             <Card className="border-destructive/20 bg-destructive/5">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between mb-2">
-                  <CardTitle className="text-lg text-destructive">
+                  <CardTitle className="text-sm lg:text-base text-destructive">
                     With a Lower Score
                   </CardTitle>
-                  <span className="text-2xl">😰</span>
+                  <span className="text-xl">😰</span>
                 </div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-xs text-muted-foreground">
                   Credit Score: 680 (Fair)
                 </div>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3">
                 <div>
-                  <div className="text-sm text-muted-foreground">Interest Rate</div>
-                  <div className="text-2xl font-bold text-destructive">
+                  <div className="text-xs text-muted-foreground">Interest Rate</div>
+                  <div className="text-lg lg:text-xl font-bold text-destructive">
                     {currentConfig.lowerScoreRate}%
                   </div>
                 </div>
                 <div>
-                  <div className="text-sm text-muted-foreground">Total Interest Paid</div>
-                  <div className="text-xl font-bold text-foreground">
+                  <div className="text-xs text-muted-foreground">Total Interest Paid</div>
+                  <div className="text-sm lg:text-base font-bold text-foreground">
                     {formatCurrency(lowerScoreInterest)}
                   </div>
                 </div>
@@ -207,25 +207,25 @@ const SavingsCalculator = () => {
             <Card className="border-success/20 bg-success/5">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between mb-2">
-                  <CardTitle className="text-lg text-success">
+                  <CardTitle className="text-sm lg:text-base text-success">
                     With a 750+ Score
                   </CardTitle>
-                  <span className="text-2xl">😊</span>
+                  <span className="text-xl">😊</span>
                 </div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-xs text-muted-foreground">
                   Credit Score: 750+ (Excellent)
                 </div>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3">
                 <div>
-                  <div className="text-sm text-muted-foreground">Interest Rate</div>
-                  <div className="text-2xl font-bold text-success">
+                  <div className="text-xs text-muted-foreground">Interest Rate</div>
+                  <div className="text-lg lg:text-xl font-bold text-success">
                     {currentConfig.highScoreRate}%
                   </div>
                 </div>
                 <div>
-                  <div className="text-sm text-muted-foreground">Total Interest Paid</div>
-                  <div className="text-xl font-bold text-foreground">
+                  <div className="text-xs text-muted-foreground">Total Interest Paid</div>
+                  <div className="text-sm lg:text-base font-bold text-foreground">
                     {formatCurrency(highScoreInterest)}
                   </div>
                 </div>
