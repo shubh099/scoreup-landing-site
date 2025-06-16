@@ -177,9 +177,12 @@ const SavingsCalculator = () => {
             {/* Lower Score Card */}
             <Card className="border-destructive/20 bg-destructive/5">
               <CardHeader className="pb-4">
-                <CardTitle className="text-lg text-destructive">
-                  With a Lower Score
-                </CardTitle>
+                <div className="flex items-center justify-between mb-2">
+                  <CardTitle className="text-lg text-destructive">
+                    With a Lower Score
+                  </CardTitle>
+                  <span className="text-2xl">😰</span>
+                </div>
                 <div className="text-sm text-muted-foreground">
                   Credit Score: 680 (Fair)
                 </div>
@@ -203,9 +206,12 @@ const SavingsCalculator = () => {
             {/* High Score Card */}
             <Card className="border-success/20 bg-success/5">
               <CardHeader className="pb-4">
-                <CardTitle className="text-lg text-success">
-                  With a 750+ Score
-                </CardTitle>
+                <div className="flex items-center justify-between mb-2">
+                  <CardTitle className="text-lg text-success">
+                    With a 750+ Score
+                  </CardTitle>
+                  <span className="text-2xl">😊</span>
+                </div>
                 <div className="text-sm text-muted-foreground">
                   Credit Score: 750+ (Excellent)
                 </div>
