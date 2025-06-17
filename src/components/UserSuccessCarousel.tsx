@@ -5,6 +5,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import { Card, CardContent } from "@/components/ui/card";
 import Autoplay from "embla-carousel-autoplay";
 
 const UserSuccessCarousel = () => {
@@ -59,65 +60,80 @@ const UserSuccessCarousel = () => {
 
   return (
     <div className="relative animate-scale-in">
-      <div className="bg-card rounded-2xl p-8 shadow-card border border-border">
-        <div className="text-center mb-6">
-          <h3 className="text-lg font-semibold text-foreground mb-2">Success Stories</h3>
-          <p className="text-sm text-muted-foreground">Real people, real results with ScoreUp</p>
-        </div>
-        
-        <Carousel
-          plugins={[plugin.current]}
-          className="w-full"
-          opts={{
-            align: "center",
-            loop: true,
-          }}
-        >
-          <CarouselContent>
-            {users.map((user, index) => (
-              <CarouselItem key={index}>
-                <div className="text-center">
-                  <div className="relative mb-4">
-                    <img 
-                      src={user.image} 
-                      alt={`${user.name} - Credit score success story`}
-                      className="w-32 h-32 mx-auto rounded-full object-cover border-4 border-success/20"
-                    />
-                    {/* Score improvement indicator */}
-                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-success text-success-foreground px-3 py-1 rounded-full text-xs font-bold">
-                      +{user.scoreAfter - user.scoreBefore}
+      <div className="text-center mb-6">
+        <h3 className="text-2xl font-bold text-foreground mb-2">Success Stories</h3>
+        <p className="text-muted-foreground">Real people, real results with ScoreUp</p>
+      </div>
+      
+      <Carousel
+        plugins={[plugin.current]}
+        className="w-full max-w-4xl mx-auto"
+        opts={{
+          align: "center",
+          loop: true,
+        }}
+      >
+        <CarouselContent className="-ml-2 md:-ml-4">
+          {users.map((user, index) => (
+            <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+              <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <CardContent className="p-6">
+                  <div className="text-center space-y-4">
+                    {/* Credit Score Display */}
+                    <div className="relative">
+                      <div className="text-4xl font-bold text-success mb-1">{user.scoreAfter}</div>
+                      <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
+                        <span className="line-through">{user.scoreBefore}</span>
+                        <span className="text-success font-semibold">+{user.scoreAfter - user.scoreBefore}</span>
+                      </div>
+                      {/* Score improvement indicator with arc */}
+                      <div className="w-16 h-8 mx-auto mt-2">
+                        <svg viewBox="0 0 64 32" className="w-full h-full">
+                          <path
+                            d="M 8 24 A 24 24 0 0 1 56 24"
+                            stroke="hsl(var(--muted))"
+                            strokeWidth="4"
+                            fill="none"
+                          />
+                          <path
+                            d="M 8 24 A 24 24 0 0 1 56 24"
+                            stroke="hsl(var(--success))"
+                            strokeWidth="4"
+                            fill="none"
+                            strokeDasharray="75.4"
+                            strokeDashoffset={75.4 - (75.4 * ((user.scoreAfter - user.scoreBefore) / 200))}
+                            className="transition-all duration-1000"
+                          />
+                        </svg>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <h4 className="font-semibold text-foreground text-lg">{user.name}</h4>
-                    <p className="text-sm text-muted-foreground">{user.profession}</p>
                     
-                    <div className="flex items-center justify-center space-x-4 mt-4">
-                      <div className="text-center">
-                        <div className="text-sm text-muted-foreground">Before</div>
-                        <div className="text-lg font-bold text-destructive">{user.scoreBefore}</div>
-                      </div>
-                      
-                      <div className="text-2xl text-success">→</div>
-                      
-                      <div className="text-center">
-                        <div className="text-sm text-muted-foreground">After</div>
-                        <div className="text-lg font-bold text-success">{user.scoreAfter}</div>
-                      </div>
+                    {/* User Image */}
+                    <div className="relative">
+                      <img 
+                        src={user.image} 
+                        alt={`${user.name} - Credit score success story`}
+                        className="w-20 h-20 mx-auto rounded-full object-cover border-4 border-success/20"
+                      />
+                    </div>
+                    
+                    {/* User Details */}
+                    <div className="space-y-1">
+                      <h4 className="font-bold text-foreground text-lg">{user.name}</h4>
+                      <p className="text-sm text-muted-foreground">{user.profession}</p>
                     </div>
                   </div>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-        
-        <div className="mt-8 text-center">
-          <p className="text-sm text-muted-foreground">
-            Join thousands who've improved their credit with ScoreUp
-          </p>
-        </div>
+                </CardContent>
+              </Card>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+      
+      <div className="mt-6 text-center">
+        <p className="text-sm text-muted-foreground">
+          Join thousands who've improved their credit with ScoreUp
+        </p>
       </div>
     </div>
   );
