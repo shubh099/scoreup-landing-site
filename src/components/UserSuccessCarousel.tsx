@@ -52,13 +52,13 @@ const UserSuccessCarousel = () => {
         <CarouselContent className="-ml-2 md:-ml-4">
           {users.map((user, index) => (
             <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <CardContent className="p-6">
-                  <div className="text-center">
+              <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                <CardContent className="p-0">
+                  <div className="aspect-[4/5] w-full">
                     <img 
                       src={user.image} 
                       alt={`Success story ${index + 1}`}
-                      className="w-20 h-20 mx-auto rounded-full object-cover border-4 border-success/20"
+                      className="w-full h-full object-cover"
                     />
                   </div>
                 </CardContent>
