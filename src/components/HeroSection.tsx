@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import PhoneNumberInput from './PhoneNumberInput';
 import TrustIndicators from './TrustIndicators';
-import ScoreVisualization from './ScoreVisualization';
+import UserSuccessCarousel from './UserSuccessCarousel';
 import OTPVerificationDialog from './OTPVerificationDialog';
 
 const HeroSection = () => {
@@ -56,8 +56,8 @@ const HeroSection = () => {
               <TrustIndicators />
             </div>
 
-            {/* Right Column - Visual */}
-            <ScoreVisualization />
+            {/* Right Column - User Success Carousel */}
+            <UserSuccessCarousel />
           </div>
         </div>
       </section>
