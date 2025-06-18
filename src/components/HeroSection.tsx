@@ -38,7 +38,7 @@ const HeroSection = () => {
                 </h1>
                 
                 <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl">
-                  A proven 4-step plan to achieve 750+ credit score
+                  Deep Analysis • Expert Guidance • Personalized Plan
                 </p>
               </div>
 
