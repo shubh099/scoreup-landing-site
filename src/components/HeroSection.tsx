@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import PhoneNumberInput from './PhoneNumberInput';
-import TrustIndicators from './TrustIndicators';
 import UserSuccessCarousel from './UserSuccessCarousel';
 import OTPVerificationDialog from './OTPVerificationDialog';
 
@@ -51,9 +50,6 @@ const HeroSection = () => {
                 setMobileNumber={setMobileNumber}
                 className="hidden md:block"
               />
-
-              {/* Trust indicators */}
-              <TrustIndicators />
             </div>
 
             {/* Right Column - User Success Carousel */}
