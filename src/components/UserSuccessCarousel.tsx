@@ -37,7 +37,7 @@ const UserSuccessCarousel = () => {
   return (
     <div className="relative animate-scale-in">
       <div className="text-center mb-6">
-        <h3 className="text-2xl font-bold text-foreground mb-2">Success Stories</h3>
+        <h3 className="text-2xl font-bold text-foreground mb-2">Real People, Real Results</h3>
         <p className="text-muted-foreground">Real people, real results with ScoreUp</p>
       </div>
       
